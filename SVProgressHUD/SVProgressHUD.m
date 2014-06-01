@@ -137,6 +137,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType atWindowLevel:(UIWindowLevel)level {
     [[self sharedView] setCustomWindowLevel:YES];
+    [[self sharedView] setWindowLevel:level];
     [[self sharedView] showProgress:-1 status:nil maskType:maskType];
 }
 
