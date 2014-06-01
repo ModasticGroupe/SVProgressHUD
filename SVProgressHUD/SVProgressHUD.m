@@ -500,7 +500,6 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                     [window addSubview:self.overlayView];
                     break;
                 }
-                self.customWindowLevel = NO;
             }
             else {
                 if (window.windowLevel == UIWindowLevelNormal) {
@@ -508,6 +507,10 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
                     break;
                 }
             }
+        }
+        
+        if (self.customWindowLevel) {
+            self.customWindowLevel = NO;
         }
     }
     
