@@ -49,6 +49,8 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 @property (nonatomic, readwrite) NSUInteger activityCount;
 @property (nonatomic, strong) CAShapeLayer *backgroundRingLayer;
 @property (nonatomic, strong) CAShapeLayer *ringLayer;
+@property (nonatomic, readwrite) BOOL customWindowLevel;
+@property (nonatomic, readwrite) UIWindowLevel windowLevel;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
@@ -130,6 +132,11 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 }
 
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType {
+    [[self sharedView] showProgress:-1 status:nil maskType:maskType];
+}
+
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType atWindowLevel:(UIWindowLevel)level {
+    [[self sharedView] setCustomWindowLevel:YES];
     [[self sharedView] showProgress:-1 status:nil maskType:maskType];
 }
 
@@ -487,11 +494,21 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     if(!self.overlayView.superview){
         NSEnumerator *frontToBackWindows = [[[UIApplication sharedApplication]windows]reverseObjectEnumerator];
         
-        for (UIWindow *window in frontToBackWindows)
-            if (window.windowLevel == UIWindowLevelNormal) {
-                [window addSubview:self.overlayView];
-                break;
+        for (UIWindow *window in frontToBackWindows) {
+            if (self.customWindowLevel) {
+                if (window.windowLevel == self.windowLevel) {
+                    [window addSubview:self.overlayView];
+                    break;
+                }
+                self.customWindowLevel = NO;
             }
+            else {
+                if (window.windowLevel == UIWindowLevelNormal) {
+                    [window addSubview:self.overlayView];
+                    break;
+                }
+            }
+        }
     }
     
     if(!self.superview)

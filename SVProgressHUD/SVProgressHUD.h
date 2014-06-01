@@ -42,6 +42,7 @@ typedef NSUInteger SVProgressHUDMaskType;
 
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
++ (void)showWithMaskType:(SVProgressHUDMaskType)maskType atWindowLevel:(UIWindowLevel)level;
 + (void)showWithStatus:(NSString*)status;
 + (void)showWithStatus:(NSString*)status maskType:(SVProgressHUDMaskType)maskType;
 
